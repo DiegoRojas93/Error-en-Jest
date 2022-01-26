@@ -1,16 +1,16 @@
 const path = require('path');
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const Dotenv = require('dotenv-webpack');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const svgToMiniDataURI = require('mini-svg-data-uri');
+const HtmlWebpackPlugin = require('html-webpack-plugin'),
+      MiniCssExtractPlugin = require('mini-css-extract-plugin'),
+      Dotenv = require('dotenv-webpack'),
+      BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
+      svgToMiniDataURI = require('mini-svg-data-uri');
 
 module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.[contenthash].js',
+    filename: 'main.[contenthash].js',
     assetModuleFilename: 'assets/images/[hash][ext][query]'
   },
   mode: 'development',
@@ -18,14 +18,14 @@ module.exports = {
   devServer: {
     compress: true,
     historyApiFallback: true,
-    port: 3006,
+    port: 3001,
     open: true,
   },
   resolve: {
-    extensions: ['js'],
+    extensions: ['.js', '.jsx'],
     alias: {
-      '@images': path.resolve(__dirname, 'src/images/'),
-      '@styles': path.resolve(__dirname, 'src/css/'),
+      '@images': path.resolve(__dirname, 'src/assets/images/'),
+      '@styles': path.resolve(__dirname, 'src/css'),
       '@component': path.resolve(__dirname, 'src/components/'),
       '@utils': path.resolve(__dirname, 'src/utils/')
     }
@@ -33,7 +33,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.m?js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader"
@@ -84,7 +84,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: './public/index.html',
-      filename: 'index.html'
+      filename: './index.html'
     }),
     new MiniCssExtractPlugin({
       filename: 'assets/css/[name].[contenthash].css'
